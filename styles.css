@@ -1,0 +1,4 @@
+.card.collapse-1-inner-child-row .card-body {
+  display: flex !important;
+  justify-content: space-between !important;
+}

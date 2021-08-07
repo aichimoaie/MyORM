@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <meta content="ie=edge" http-equiv="X-UA-Compatible">
+    <title>PHP| MySQL | Vue.js | Axios Example</title>
+    <script src="https://cdn.jsdelivr.net/npm/vue"></script>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+
+
+    <link href="https://unpkg.com/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet" type="text/css"/>
+    <link href="https://unpkg.com/bootstrap-vue@latest/dist/bootstrap-vue.css" rel="stylesheet" type="text/css"/>
+
+  <script
+          src="https://code.jquery.com/jquery-2.2.4.min.js"
+          integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44="
+          crossorigin="anonymous"></script>
+    <!-- Required scripts -->
+    <script src="https://unpkg.com/vue"></script>
+    <script src="https://unpkg.com/bootstrap-vue@latest/dist/bootstrap-vue.js"></script>
+
+    <link href="styles.css" rel="stylesheet" type="text/css"/>
+
+
+</head>
+<body>
+
+<template id="bs-modal">
+  <!-- MODAL -->
+  <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+          <h4 class="modal-title" id="myModalLabel">Modal title</h4>
+        </div>
+        <div class="modal-body">
+          ...
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-primary">Save changes</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</template>
+
+
+<div id='vueapp'>
+    START:
+<!--  <b-modal id="modalOne">Hello Modal One</b-modal>-->
+<!--  <b-modal id="modaltwo">Hello Modal Two</b-modal>-->
+
+  <b-modal id="parrentModal">Hello s Modal Two</b-modal>
+  <b-modal id="childModal">Hello care {{ModalProps.firstname}} Two</b-modal>
+
+
+  <table border='1' style='border-collapse: collapse;' width='100%'>
+        <tr>
+            <th>Name</th>
+            <th>Email</th>
+            <th>Country</th>
+            <th>City</th>
+            <th>Job</th>
+        </tr>
+
+        <tr v-for='contact in contacts'>
+            <td>{{ contact.firstname }}</td>
+            <td>{{ contact.lastname }}</td>
+        </tr>
+    </table>
+
+    <div>
+      <b-button v-b-modal.modaltwo>Modaltwo</b-button>
+      <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal">Modal</button>
+        <b-button v-b-toggle.collapse-1 variant="primary">Show data</b-button>
+
+      <img @click="addParentRow()"
+           alt='edit-icon' src="https://dyo.isecrets.se/images/zoom-in.svg"
+           style="width:30px; height: 30px;margin-right: auto;"/>
+
+        <b-collapse class="mt-2" id="collapse-1">
+            <b-card :key="parentId" v-for="parentId in numIt ">
+                <p class="card-text" style= "display: inline" >Category {{parentId}}</p>
+                <b-button size="sm"
+                          v-b-toggle="['collapse-' + parentId +'-inner']">Expand
+                </b-button>
+                <div style="display:inline;">
+                  <img :data-id="parentId"
+                       @click="addChildRow(parentId)"
+                       alt='edit-icon' src="https://dyo.isecrets.se/images/zoom-in.svg"
+                       style="width:30px; height: 30px;margin-right: auto;"/>
+
+
+                  <img :data-id="parentId"
+                         v-b-modal="'parrentModal'"
+                         click="sendPropsToModal(parentId)"
+                         alt='edit-icon' src="https://dyo.isecrets.se/images/edit100px.svg"
+                         style="width:30px; height: 30px;margin-right: auto;"/>
+
+                    <img :data-id="parentId"
+                         @click="removeParentRow(parentId)"
+                         alt='edit-icon' src="https://dyo.isecrets.se/images/trashicon.svg"
+                         style="width:30px; height: 30px;margin-right: auto;"
+                    />
+                </div>
+
+
+                <b-collapse :id="'collapse-' + parentId +'-inner'" :key="index"
+                            class="mt-2" style="flex-direction: row" v-for='(contact,index) in contacts'>
+                    <b-card class='collapse-1-inner-child-row'>
+                        <div style="display: inline">
+                            {{ contact.firstname }}
+                        </div>
+                        <div style="display:inline;">
+                            <img :data-id="contact.id"
+                                 :data-my-amazing-custom-attribute="contact"
+                                 v-b-modal="'childModal'"
+                                 @click="sendPropsToModal(contact)"
+                                 alt='edit-icon' src="https://dyo.isecrets.se/images/edit100px.svg"
+                                 style="width:30px; height: 30px;margin-right: auto;"/>
+
+                            <img :data-id="contact.id"
+                                 :data-my-amazing-custom-attribute="contact"
+                                 @click="removeChildRow(contact.id, index)"
+                                 alt='edit-icon' src="https://dyo.isecrets.se/images/trashicon.svg"
+                                 style="width:30px; height: 30px;margin-right: auto;"
+                            />
+                        </div>
+                    </b-card>
+
+                </b-collapse>
+            </b-card>
+        </b-collapse>
+    </div>
+  <modal></modal>
+</div>
+
+<script>
+  var modal = Vue.component('modal', {
+    template: '#bs-modal',
+  });
+
+    var app = new Vue({
+        el: '#vueapp',
+      components: {
+        modal: modal
+      },
+        data: {
+            name: '',
+            email: '',
+            country: '',
+            city: '',
+            job: '',
+            contacts: [],
+            numIt: 2,
+            ModalProps: ''
+        },
+        mounted: function () {
+            this.getContacts()
+        },
+
+        methods: {
+            getContacts: function () {
+                axios.get('api/Test.php')
+                    .then(function (response) {
+                        console.log(response.data);
+                        app.contacts = response.data;
+
+                    })
+                    .catch(function (error) {
+                        console.log(error);
+                    });
+            },
+            createContact: function () {
+            },
+            resetForm: function () {
+            },
+            sendPropsToModal(item) {
+              console.log(item);
+              this.ModalProps = item;
+            },
+            addChildRow: function (c) {
+                console.log(JSON.stringify(c));
+                // console.log(event.target.dataset);
+                // console.log('ID:', event.target.dataset.id);
+                // console.log('Name:', event.target.dataset.myAmazingCustomAttribute);
+            },
+            editChildRow: function (c) {
+                console.log(JSON.stringify(c));
+                // console.log(event.target.dataset);
+                // console.log('ID:', event.target.dataset.id);
+                // console.log('Name:', event.target.dataset.myAmazingCustomAttribute);
+            },
+
+            removeChildRow: function (id, index) {
+                console.log(index);
+                console.log(id);
+                app.contacts.splice(index, 1)
+                // console.log(event.target.dataset);
+                // console.log('ID:', event.target.dataset.id);
+                // console.log('Name:', event.target.dataset.myAmazingCustomAttribute);
+                // axios.delete('api/DeletePersonTest.php', {
+                //     // headers: {
+                //     //   Authorization: authorizationToken
+                //     // },
+                //     data: {
+                //         Id: event.target.dataset.id
+                //     }
+                // }).then(function (response) {
+                //     console.log(response.data);
+                // })
+                //     .catch(function (error) {
+                //         console.log(error);
+                //     });
+            }
+        }
+    });
+
+</script>
+
+
+</body>
+</html>
