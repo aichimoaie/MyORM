@@ -37,8 +37,9 @@ class Pdo implements InterfaceAdapter
     {
         $sth = $this->_dbh->prepare($sql);
         $sth->execute();
+        return $sth->fetchAll();
 //        return $sth->fetchObject( \PDO::FETCH_CLASS'App\\MyORM\\Model\\Person');
-        return $sth->fetchAll( \PDO::FETCH_CLASS,'App\\MyORM\\Model\\Person');
+//        return $sth->fetchAll( \PDO::FETCH_CLASS,'App\\MyORM\\Model\\Person');
 
     }
 
