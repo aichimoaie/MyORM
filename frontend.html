@@ -164,7 +164,7 @@
 
         methods: {
             getContacts: function () {
-                axios.get('api/Test.php')
+                axios.get('index.php/ce/daa')
                     .then(function (response) {
                         console.log(response.data);
                         app.contacts = response.data;
@@ -196,9 +196,9 @@
             },
 
             removeChildRow: function (id, index) {
-                console.log(index);
+                console.log(frontend);
                 console.log(id);
-                app.contacts.splice(index, 1)
+                app.contacts.splice(frontend, 1)
                 // console.log(event.target.dataset);
                 // console.log('ID:', event.target.dataset.id);
                 // console.log('Name:', event.target.dataset.myAmazingCustomAttribute);
