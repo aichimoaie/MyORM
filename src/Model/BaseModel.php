@@ -5,9 +5,9 @@ use App\MyORM\Adapter\Config as Config;
 use App\MyORM\Adapter\Factory as DatabaseFactory;
 use App\MyORM\QueryBuilder\SQLQueryBuilder;
 
- class BaseModel extends SQLQueryBuilder
+abstract class BaseModel extends SQLQueryBuilder
 {
-    protected $name;
+    private $name;
     private $db;
 
     public function __construct($table){
@@ -15,17 +15,31 @@ use App\MyORM\QueryBuilder\SQLQueryBuilder;
         $this->name = $table;
         $this->db = DatabaseFactory::connect(Config::getInstance());
     }
-
-    public function get()
-    {
-        $this->select(['*']);
-//        $this->limit(2,1);
+    public function fetch(){
+        var_dump($this->getSQL());
         return $this->db->fetch($this->getSQL());
     }
-//
-//    public function save(){
-//
-//    }
+
+    public function all(){
+        $this->select(['*']);
+        return $this->db->fetch($this->getSQL());
+    }
+
+     public function findOrFail($id){
+         $this->select(['*'])->where('id',$id,'=');
+         return $this->db->fetch($this->getSQL());
+     }
+
+    public function save(){
+        $this->insert($this->toArray());
+        return $this->db->fetch($this->getSQL());
+    }
+    public function updateAll()
+    {
+        return $this->update($this->toArray());
+//        return $this->db->fetch($this->getSQL());
+    }
+
 //    public function update(){
 //
 //    }
@@ -44,5 +58,5 @@ use App\MyORM\QueryBuilder\SQLQueryBuilder;
 //    public function count(){
 //
 //    }
-
+    abstract protected function toArray();
 }

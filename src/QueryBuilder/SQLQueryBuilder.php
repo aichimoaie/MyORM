@@ -7,17 +7,12 @@ use stdClass;
 
 class SQLQueryBuilder implements InterfaceSQLQueryBuilder
 {
-    protected $table;
-    protected $query;
+    private $table;
+    private $query;
 
     public function __construct($table)
     {
         $this->table = $table;
-    }
-
-    protected function reset(): void
-    {
-        $this->query = new stdClass();
     }
 
     /**
@@ -32,6 +27,10 @@ class SQLQueryBuilder implements InterfaceSQLQueryBuilder
         return $this;
     }
 
+    protected function reset(): void
+    {
+        $this->query = new stdClass();
+    }
 
     /**
      * Add a WHERE condition.
@@ -74,6 +73,37 @@ class SQLQueryBuilder implements InterfaceSQLQueryBuilder
         }
         $sql .= ";";
         return $sql;
+    }
+
+    public function insert(array $associative): SQLQueryBuilder
+    {
+        $this->reset();
+        $this->query->base = "INSERT INTO " . $this->table . "(" . implode(',', array_keys($associative)) . ")"
+            . "VALUES ('" . implode('\',\'', array_values($associative)) . "')";
+        $this->query->type = 'insert';
+        return $this;
+    }
+
+
+    public function update(array $associative)
+    {
+        $this->reset();
+        $pairs = implode(', ', array_map(
+            function ($v, $k) { return sprintf("%s='%s'", $k, $v); },
+            $associative,
+            array_keys($associative)
+        ));
+        $this->query->base = "UPDATE " . $this->table . " SET $pairs ";
+        $this->query->type = 'update';
+        return $this;
+    }
+
+    public function delete()
+    {
+        $this->reset();
+        $this->query->base = "DELETE FROM " . $this->table;
+        $this->query->type = 'delete';
+        return $this;
     }
 
     public function addSelect()
@@ -126,11 +156,6 @@ class SQLQueryBuilder implements InterfaceSQLQueryBuilder
         // TODO: Implement find() method.
     }
 
-    public function findOrFail(): SQLQueryBuilder
-    {
-        // TODO: Implement findOrFail() method.
-    }
-
     public function groupBy(): SQLQueryBuilder
     {
         // TODO: Implement groupBy() method.
@@ -151,10 +176,21 @@ class SQLQueryBuilder implements InterfaceSQLQueryBuilder
         // TODO: Implement join() method.
     }
 
-    public function leftJoin()
+    public function leftJoin($table) :SQLQueryBuilder
     {
-        // TODO: Implement leftJoin() method.
+        $this->query->base .= ' LEFT JOIN ' . $table . '';
+        return $this;
     }
+
+    public function on($condition) :SQLQueryBuilder
+    {
+        $this->query->base .= ' ON ' . $condition;
+        return $this;
+    }
+
+
+
+
 
     public function rightJoin()
     {
@@ -166,20 +202,12 @@ class SQLQueryBuilder implements InterfaceSQLQueryBuilder
         // TODO: Implement subJoin() method.
     }
 
-    public function update()
-    {
-        // TODO: Implement update() method.
-    }
 
     public function save()
     {
         // TODO: Implement save() method.
     }
 
-    public function delete()
-    {
-        // TODO: Implement delete() method.
-    }
 
     public function deleteAll()
     {
@@ -224,5 +252,10 @@ class SQLQueryBuilder implements InterfaceSQLQueryBuilder
     public function dosentExist()
     {
         // TODO: Implement dosentExist() method.
+    }
+
+    public function removeLastComma($SQLQuerryString)
+    {
+        return substr_replace($SQLQuerryString, " ", -1);
     }
 }

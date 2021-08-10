@@ -10,8 +10,8 @@ use PDOException;
  */
 class Pdo implements InterfaceAdapter
 {
-    private $_dbh;
     private static $instance;
+    private $_dbh;
 
 //    private function __construct(){
 //
@@ -37,7 +37,7 @@ class Pdo implements InterfaceAdapter
     {
         $sth = $this->_dbh->prepare($sql);
         $sth->execute();
-        return $sth->fetchAll();
+        return $sth->fetchAll(\PDO::FETCH_ASSOC);
 //        return $sth->fetchObject( \PDO::FETCH_CLASS'App\\MyORM\\Model\\Person');
 //        return $sth->fetchAll( \PDO::FETCH_CLASS,'App\\MyORM\\Model\\Person');
 

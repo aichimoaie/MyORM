@@ -9,7 +9,7 @@ class ThrottleMiddleware extends AbstractMiddleware
 
     public function handle($data = null)
     {
-        var_dump(__METHOD__ . " - Inside ThrottleMiddleware");
+//        var_dump(__METHOD__ . " - Inside ThrottleMiddleware");
 //        if (false) {
 //            throw new Exception("Invalid IP");
 //        }

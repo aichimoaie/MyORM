@@ -5,7 +5,7 @@ namespace App\MyORM\MigrationBuilder;
 use App\MyORM\Adapter\Config as Config;
 use App\MyORM\Adapter\Factory as DatabaseFactory;
 
-class MigrationDirector
+class Library_BookMigration
 {
     private $builder;
     private $db;
@@ -20,13 +20,10 @@ class MigrationDirector
     public function up(): void
     {
         $this->builder
-            ->bigIncrements('id')
-            ->stringg('NUME')->primaryKEY()
-            ->integer('varsta')->foreignKey()->references('person')->on('id')
-            ->dateTime('date')->default('CURRENT_TIMESTAMP');
+            ->integer('book_id')->primaryKEY()->foreignKey()->references('book')->on('id')
+            ->integer('library_id')->primaryKEY()->foreignKey()->references('library')->on('id');
 
-
-        echo $this->builder->run();
+//        echo $this->builder->run();
 
         $this->db->fetch($this->builder->run());
     }
@@ -37,3 +34,4 @@ class MigrationDirector
     }
 
 }
+

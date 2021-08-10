@@ -33,7 +33,7 @@ interface InterfaceSQLQueryBuilder
 
     public function find();
 
-    public function findOrFail(): SQLQueryBuilder;
+//    public function findOrFail(): SQLQueryBuilder;
 
     public function groupBy(): SQLQueryBuilder;
 
@@ -43,14 +43,16 @@ interface InterfaceSQLQueryBuilder
 
     public function join();
 
-    public function leftJoin();
+    public function leftJoin($table);
+
+    public function on($condition);
 
     public function rightJoin();
 
     public function subJoin();
 
 
-    public function update();
+//    public function update(array $associative);
 
     public function save();
 

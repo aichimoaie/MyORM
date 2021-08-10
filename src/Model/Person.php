@@ -3,36 +3,42 @@
 namespace App\MyORM\Model;
 
 use DateTime;
-
+//traits, visible.... ~~~COLLECTIONS!!!??
 class Person extends BaseModel
 {
 
     public int $id;
     public string $firstname;
     public string $lastname;
-//    public int $firstparent_id;
-//    public int $secondparent_id;
     public DateTime $date; //date("Y-m-d H:i:s");
 
-//$date = new DateTime('2000-01-01');
-//echo $date->format('Y-m-d H:i:sP') . "\n";
 
     public function __construct()
     {
         parent::__construct('person');
     }
 
-    //traits, etc....
+    public function with($table){
+        $this->select(['*'])->leftJoin($table)->on('person.id = ' . $table .'.id' )->leftJoin($table)->on('person.id = ' . $table .'.id' )->fetch();
+    }
 
-    public function get()
+//    public function get()
+//    {
+//        $obj = [];
+//        $array = parent::get();
+////         $instance = new self();
+//
+//        foreach ($array as $key => $item) {
+//            $obj[] = (object)$item;
+//        }
+//        return $obj;
+//    }
+    public function toArray()
     {
-        $obj = [];
-        $array = parent::get();
-//         $instance = new self();
-
-        foreach ($array as $key => $item) {
-            $obj[] = (object)$item;
+        $array = [];
+        foreach ($this as $key => $value) {
+            $array[$key] = $value;
         }
-        return $obj;
+        return ($array);
     }
 }

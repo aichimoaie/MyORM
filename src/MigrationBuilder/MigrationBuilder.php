@@ -4,7 +4,7 @@ namespace App\MyORM\MigrationBuilder;
 
 use stdClass;
 
-class MigrationBuilder implements InterfaceMigrationBuilder, InterfaceMigrationBuilder2
+class MigrationBuilder implements InterfaceMigrationBuilder
 {
     protected $Schema;
 
@@ -131,8 +131,7 @@ class MigrationBuilder implements InterfaceMigrationBuilder, InterfaceMigrationB
         $FK_NUMBER = isset($this->Schema->constraints['FOREIGN_KEY']) == true ? count(
             $this->Schema->constraints['FOREIGN_KEY']
         ) : 0;
-        echo $FK_NUMBER;
-        $FK_CONSTRAINT_NAME = 'FK_CONSTRAINT_' . $FK_NUMBER;
+        $FK_CONSTRAINT_NAME = 'FK_' . $col_name . '_' . $FK_NUMBER;
 
         $this->Schema->constraints['FOREIGN_KEY'][$FK_CONSTRAINT_NAME]['col_name'] = $col_name;
         return $this;
