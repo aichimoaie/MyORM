@@ -12,7 +12,6 @@ class PersonController extends Controller
     public function __construct()
     {
         $this->person = new Person;
-//        var_dump(__METHOD__ . " PersonControlleConstructor");
     }
 
     //GET	api/Person
@@ -26,14 +25,10 @@ class PersonController extends Controller
     //GET	api/person/{personId}
     public function show($id)
     {
-//        var_dump(__METHOD__ . " PersonControllerSHOW(". $id['id']. ")" );
+        var_dump(__METHOD__ . " PersonControllerSHOW(". $id['id']. ")" );
         $person = $this->person->findOrFail($id['id']);
-
-        $person = new Person();
-        $person->firstname = 'cv';
-        $person->lastname = 'c3v';
-        $person->save();
-//        $this->jsonResponse($person);
+        var_dump();
+        $this->jsonResponse($person);
     }
 
     //post api/person

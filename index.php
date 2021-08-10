@@ -2,11 +2,13 @@
 namespace App\MyORM;
 require __DIR__.'/vendor/autoload.php';
 
+use App\MyORM\Helpers\Convertor;
 use App\MyORM\Middleware\AuthenticationMiddleware;
 use App\MyORM\Middleware\AuthorizationMiddleware;
 use App\MyORM\Middleware\DispatchRoutesMiddleware;
 use App\MyORM\Middleware\ThrottleMiddleware;
 use App\MyORM\Middleware\Server;
+use App\MyORM\test\BookControllerTest;
 use Dotenv\Dotenv;
 
 $dotenv = Dotenv::createImmutable(__DIR__);
@@ -24,7 +26,7 @@ $builder = new Server(
     new ThrottleMiddleware,
     new DispatchRoutesMiddleware
 );
-
+//
 try {
     $builder->build()->handle($data);
 } catch (\Exception $exception){
@@ -40,3 +42,8 @@ try {
 
 //$seed = new DatabaseSeed();
 //$seed->seed();
+//
+//$data = '27 may 1995  ';
+//echo  Convertor::stringToMysqlDatetime('27-5-2015 23:15:23');
+
+

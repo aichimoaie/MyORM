@@ -32,7 +32,7 @@ abstract class BaseModel extends SQLQueryBuilder
 
     public function save(){
         $this->insert($this->toArray());
-        return $this->db->fetch($this->getSQL());
+        $this->db->fetch($this->getSQL());
     }
     public function updateAll()
     {

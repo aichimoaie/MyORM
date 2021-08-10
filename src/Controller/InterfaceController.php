@@ -1,24 +1,18 @@
 <?php
 
-
 namespace App\MyORM\Controller;
-
 
 interface InterfaceController
 {
-//    // return all records
-//GET /person
-//
-//// return a specific record
-//GET /person/{id}
-//
-//// create a new record
-//POST /person
-//
-//// update an existing record
-//PUT /person/{id}
-//
-//// delete an existing record
-//DELETE /person/{id}
+    public function index();
 
+    public function show($request);
+
+    public function store($request);
+
+    public function update($request);
+
+    public function delete($request);
+
+    public function jsonResponse($array);
 }

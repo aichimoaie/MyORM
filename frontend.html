@@ -164,8 +164,9 @@
 
         methods: {
             getContacts: function () {
-                axios.get('index.php/ce/daa')
+                axios.get('/api/person/index')
                     .then(function (response) {
+                        console.log('resp');
                         console.log(response.data);
                         app.contacts = response.data;
 
