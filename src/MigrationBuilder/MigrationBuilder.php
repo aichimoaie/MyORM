@@ -33,13 +33,13 @@ class MigrationBuilder implements InterfaceMigrationBuilder
                 $sql .= "PRIMARY KEY (`" . $pkColumns . "`),";
             }
 
-//CONSTRAINT FK_PersonOrder FOREIGN KEY (PersonID)
-//REFERENCES Persons(PersonID)
             if (!empty($constraints['FOREIGN_KEY'])) {
                 foreach ($constraints['FOREIGN_KEY'] as $key => $fk_constraint) {
                     $sql .= "CONSTRAINT " . $key . " FOREIGN KEY (`" . $fk_constraint['col_name'] . "`) 
-                    REFERENCES " . $fk_constraint['ref_table_name'] . " (`" . $fk_constraint['ref_col_name'] . "`),";
-//missing on update.
+                    REFERENCES " . $fk_constraint['ref_table_name'] . " (`" . $fk_constraint['ref_col_name'] . "`)";
+                    $sql .= isset($fk_constraint['onDelete']) == true ? " ON DELETE ". $fk_constraint['onDelete'] : '';
+                    $sql .= isset($fk_constraint['onUpdate']) == true ? " ON UPDATE " . $fk_constraint['onUpdate'] : '';
+                    $sql .=',';
                 }
             }
             if (!empty($constraints['UNIQUE'])) {
@@ -62,7 +62,6 @@ class MigrationBuilder implements InterfaceMigrationBuilder
     {
         if (isset($this->Schema->hasAutoIncrementsField)) {
             echo 'Incorrect table definition; there can be only one auto column and it must be defined as a key';
-            //ofc there should be an event to stop the entire builder
             return $this;
         }
         $this->Schema->base .= "`" . $col_name . "` int NOT NULL AUTO_INCREMENT,";
@@ -151,10 +150,10 @@ class MigrationBuilder implements InterfaceMigrationBuilder
         return $this;
     }
 
-    public function onDelete($col_name)
+    public function onDelete($constraint)
     {
         $lastFK = array_key_last($this->Schema->constraints['FOREIGN_KEY']);
-        $this->Schema->constraints['FOREIGN_KEY'][$lastFK]['onDelete'] = $col_name;
+        $this->Schema->constraints['FOREIGN_KEY'][$lastFK]['onDelete'] = $constraint;
         return $this;
     }
 

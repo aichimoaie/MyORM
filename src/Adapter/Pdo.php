@@ -43,9 +43,15 @@ class Pdo implements InterfaceAdapter
 
     }
 
-    public function test()
+    public function lastInsertId()
     {
-        json_encode($this->_dbh);
+        return $this->_dbh->lastInsertId();
+    }
+
+    function checkTableExists($tableName) : bool
+    {
+        $results = $this->_dbh->query("SHOW TABLES LIKE '$tableName'");
+        return $results->rowCount() > 0 ? true : false;
     }
 
 }

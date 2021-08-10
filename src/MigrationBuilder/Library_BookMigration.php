@@ -20,11 +20,10 @@ class Library_BookMigration
     public function up(): void
     {
         $this->builder
-            ->integer('book_id')->primaryKEY()->foreignKey()->references('book')->on('id')
-            ->integer('library_id')->primaryKEY()->foreignKey()->references('library')->on('id');
+            ->integer('book_id')->primaryKEY()->foreignKey()->references('book')->on('id')->onDelete('CASCADE')
+            ->integer('library_id')->primaryKEY()->foreignKey()->references('library')->on('id')->onDelete('CASCADE');
 
-//        echo $this->builder->run();
-
+//        var_dump($this->builder->run());
         $this->db->fetch($this->builder->run());
     }
 

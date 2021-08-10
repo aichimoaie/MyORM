@@ -8,6 +8,10 @@ use App\MyORM\Middleware\AuthorizationMiddleware;
 use App\MyORM\Middleware\DispatchRoutesMiddleware;
 use App\MyORM\Middleware\ThrottleMiddleware;
 use App\MyORM\Middleware\Server;
+use App\MyORM\MigrationBuilder\BookMigration;
+use App\MyORM\MigrationBuilder\Library_BookMigration;
+use App\MyORM\MigrationBuilder\LibraryMigration;
+use App\MyORM\Seed\DatabaseSeed;
 use App\MyORM\test\BookControllerTest;
 use Dotenv\Dotenv;
 
@@ -32,14 +36,14 @@ try {
 } catch (\Exception $exception){
     var_dump($exception->getMessage());
 }
-
+//
 //$L = new LibraryMigration('library');
 //$L->up();
 //$B= new BookMigration('book');
 //$B->up();
 //$T = new Library_BookMigration('library_book');
 //$T->up();
-
+//
 //$seed = new DatabaseSeed();
 //$seed->seed();
 //

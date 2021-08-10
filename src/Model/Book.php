@@ -11,7 +11,7 @@ class Book extends BaseModel
     public string $name;
     public string $publishDate;//public DateTime $releaseDate;
     public string $price;
-    public string $libraries;
+    public string $library;
 
     public function __construct()
     {

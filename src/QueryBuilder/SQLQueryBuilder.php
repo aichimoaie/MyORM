@@ -37,9 +37,9 @@ class SQLQueryBuilder implements InterfaceSQLQueryBuilder
      */
     public function where(string $field, string $value, string $operator = '='): SQLQueryBuilder
     {
-        if (!in_array($this->query->type, ['select', 'update', 'delete'])) {
-            throw new Exception("WHERE can only be added to SELECT, UPDATE OR DELETE");
-        }
+//        if (!in_array($this->query->type, ['select', 'update', 'delete'])) {
+//            throw new Exception("WHERE can only be added to SELECT, UPDATE OR DELETE");
+//        }
         $this->query->where[] = "$field $operator '$value'";
 
         return $this;
@@ -83,6 +83,27 @@ class SQLQueryBuilder implements InterfaceSQLQueryBuilder
         $this->query->type = 'insert';
         return $this;
     }
+    public function attach($pivot, $values): SQLQueryBuilder
+    {
+        $this->reset();
+        $this->query->base = "INSERT INTO " . $pivot . "(" . implode(',', array_keys($values)) . ")"
+            . "VALUES ('" . implode('\',\'', array_values($values)) . "')";
+        $this->query->type = 'attach';
+        return $this;
+    }
+
+    public function deAttach($pivot, $values): SQLQueryBuilder
+    {
+        $this->reset();
+        $this->query->base = "DELETE  FROM " . $pivot ;
+        foreach ($values as $key => $val){
+            $this->where($key, $val , '=');
+        }
+        $this->query->type = 'deAttach';
+        return $this;
+    }
+
+
 
 
     public function update(array $associative)
@@ -138,9 +159,22 @@ class SQLQueryBuilder implements InterfaceSQLQueryBuilder
 
     public function whereNotNull(string $field, string $value, string $operator = '='): SQLQueryBuilder
     {
-        // TODO: Implement whereNotNull() method.
+//        if (!in_array($this->query->type, ['select', 'update', 'delete'])) {
+//            throw new Exception("WHERE can only be added to SELECT, UPDATE OR DELETE");
+//        }
+        $this->query->where[] = "$field $operator '$value'";
+        $this->query->where[] = "$field NOT NULL";
+        return $this;
     }
 
+    public function notNull(string $field): SQLQueryBuilder
+    {
+//        if (!in_array($this->query->type, ['select', 'update', 'delete'])) {
+//            throw new Exception("WHERE can only be added to SELECT, UPDATE OR DELETE");
+//        }
+        $this->query->where[] = $field ." IS NOT NULL";
+        return $this;
+    }
     public function whereExists(string $field, string $value, string $operator = '='): SQLQueryBuilder
     {
         // TODO: Implement whereExists() method.

@@ -73,7 +73,8 @@ class Curl
         curl_setopt(self::$ch, CURLOPT_HTTPHEADER, array('Content-Type: application/json'));
         curl_setopt(self::$ch, CURLOPT_CUSTOMREQUEST, "POST");
         $response = curl_exec(self::$ch);
-        curl_close(self::$ch);
+            curl_close(self::$ch);
+            echo $response;
         return $response;
     }
 

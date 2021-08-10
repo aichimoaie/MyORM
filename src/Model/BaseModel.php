@@ -16,12 +16,11 @@ abstract class BaseModel extends SQLQueryBuilder
         $this->db = DatabaseFactory::connect(Config::getInstance());
     }
     public function fetch(){
-        var_dump($this->getSQL());
         return $this->db->fetch($this->getSQL());
     }
 
     public function all(){
-        $this->select(['*']);
+         $this->select(['*']);
         return $this->db->fetch($this->getSQL());
     }
 
@@ -32,13 +31,51 @@ abstract class BaseModel extends SQLQueryBuilder
 
     public function save(){
         $this->insert($this->toArray());
-        $this->db->fetch($this->getSQL());
+        $this->fetch($this->getSQL());
+        //very coupled to mysql and classes ar still not implemented correctly
+        $this->id=$this->db->lastInsertId();
+
     }
+    public function attachTo($tableName){
+        $pivotName = $this->name . "_" . $tableName;
+        if($this->db->checkTableExists($pivotName) === false){
+            $pivotName =  $tableName . "_" . $this->name;
+            if($this->db->checkTableExists($pivotName) === false) {
+                //throw error
+                return ;
+            }
+        }
+        $this->attach($pivotName, $this->toArray());
+        return $this->db->fetch($this->getSQL());
+    }
+    public function deAtttachFrom($tableName){
+
+        $pivotName = $this->name . "_" . $tableName;
+        if($this->db->checkTableExists($pivotName) === false){
+            $pivotName =  $tableName . "_" . $this->name;
+            if($this->db->checkTableExists($pivotName) === false) {
+                //throw error
+                return ;
+            }
+        }
+        $this->deAttach($pivotName, $this->toArray());
+
+        echo $this->getSQL();
+
+        return $this->db->fetch($this->getSQL());
+    }
+
     public function updateAll()
     {
         return $this->update($this->toArray());
 //        return $this->db->fetch($this->getSQL());
     }
+    public function getPivotModel($pivot){
+        //return primary key names
+//        $this->db->raw("SHOW KEYS FROM table WHERE Key_name = 'PRIMARY'");
+    }
+
+
 
 //    public function update(){
 //
