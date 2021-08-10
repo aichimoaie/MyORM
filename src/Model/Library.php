@@ -9,6 +9,7 @@ class Library  extends BaseModel {
     public int $id;
     public string $name;
     public string $establishDate;//public DateTime $establishDate;
+    public string $book;
 
 
     public function __construct()

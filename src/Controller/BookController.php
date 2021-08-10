@@ -22,16 +22,16 @@ class BookController extends Controller
         $this->jsonResponse($this->book->all());
     }
 
-    //GET	api/person/{personId}
+    //GET	api/book/?id=%d
     public function show($id)
     {
 //        var_dump(__METHOD__);
+//        $book = $this->book->findOrFail($id['id']);
         $book = $this->book->select(['*'])->leftJoin('library_book')->on('library_book.book_id = book.id')->where(
             'id',
             $id['id'],
             '='
         )->fetch();
-//        $person = $this->book->findOrFail($id['id']);
         $this->jsonResponse($book);
     }
 
