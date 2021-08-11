@@ -15,6 +15,7 @@ class SQLQueryBuilder implements InterfaceSQLQueryBuilder
         $this->table = $table;
     }
 
+
     /**
      * Build a base SELECT query.
      */
@@ -291,5 +292,14 @@ class SQLQueryBuilder implements InterfaceSQLQueryBuilder
     public function removeLastComma($SQLQuerryString)
     {
         return substr_replace($SQLQuerryString, " ", -1);
+    }
+
+    public function rawSql(string $query): SQLQueryBuilder
+    {
+        $this->reset();
+        $this->query->base = $query;
+        $this->query->type = 'raw';
+
+        return $this;
     }
 }

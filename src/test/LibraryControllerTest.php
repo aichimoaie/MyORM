@@ -15,7 +15,8 @@ class LibraryControllerTest
     {
         $curl = Curl::getInstance();
         //some assert or smth
-        echo $curl::getRequest('/api/library/index');
+          $curl::getRequest('/api/library/index');
+
     }
 
     public function testShow($id)
@@ -53,7 +54,7 @@ class LibraryControllerTest
     }
 }
 
-//$B = new LibraryControllerTest();
-//
-//$B->testDelete(7);
+$B = new LibraryControllerTest();
+
+$B->testIndex();
 

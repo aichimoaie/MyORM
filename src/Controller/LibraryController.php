@@ -6,20 +6,26 @@ namespace App\MyORM\Controller;
 
 use App\MyORM\Helpers\Convertor;
 use App\MyORM\Model\Library;
+use App\MyORM\Repositories\LibraryRepostiory;
 
 class LibraryController extends Controller
 {
     protected $library;
+    protected $libRepo;
     protected $LibraryService;
 
     public function __construct(){
         $this->library = new Library;
+        $this->libRepo = new LibraryRepostiory;
+
     }
 
     public function index()
     {
 //        var_dump(__METHOD__);
-        $this->jsonResponse($this->library->all());
+        $c= $this->libRepo->WithBooks();
+//       vardump($c);
+        $this->jsonResponse($c);
     }
 
     //GET	api/person/{personId}

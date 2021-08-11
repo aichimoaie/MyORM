@@ -30,7 +30,8 @@ class Controller implements InterfaceController
     }
 
     public function jsonResponse($array){
+//        echo 'aci';
         header('Content-Type: application/json');
-        echo json_encode($array);
+        echo json_encode($array, JSON_UNESCAPED_SLASHES);
     }
 }

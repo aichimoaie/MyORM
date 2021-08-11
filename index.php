@@ -11,6 +11,7 @@ use App\MyORM\Middleware\Server;
 use App\MyORM\MigrationBuilder\BookMigration;
 use App\MyORM\MigrationBuilder\Library_BookMigration;
 use App\MyORM\MigrationBuilder\LibraryMigration;
+use App\MyORM\Repositories\LibraryRepostiory;
 use App\MyORM\Seed\DatabaseSeed;
 use App\MyORM\test\BookControllerTest;
 use Dotenv\Dotenv;
@@ -43,11 +44,13 @@ try {
 //$B->up();
 //$T = new Library_BookMigration('library_book');
 //$T->up();
-//
+////
 //$seed = new DatabaseSeed();
 //$seed->seed();
-//
+
 //$data = '27 may 1995  ';
 //echo  Convertor::stringToMysqlDatetime('27-5-2015 23:15:23');
 
 
+//$b = new LibraryRepostiory();
+//var_dump($b->WithBooks());

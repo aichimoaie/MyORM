@@ -70,12 +70,10 @@ abstract class BaseModel extends SQLQueryBuilder
         return $this->update($this->toArray());
 //        return $this->db->fetch($this->getSQL());
     }
-    public function getPivotModel($pivot){
-        //return primary key names
-//        $this->db->raw("SHOW KEYS FROM table WHERE Key_name = 'PRIMARY'");
+    public function rawSQLQuerry($querry){
+        $this->rawSql($querry);
+        return $this->db->fetch($this->getSQL());
     }
-
-
 
 //    public function update(){
 //
